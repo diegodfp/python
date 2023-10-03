@@ -71,8 +71,6 @@ while True:
             op = input("\n desea continuar s o n")
             if op.lower() == "s":
                 contador += 1
-            else:
-                break
                     
     elif opcion == 2:
         print("\n\n2. Modificar Campos de un empleado")
@@ -88,7 +86,7 @@ while True:
         lstValor.remove(id)
         lstid.remove(id)
     elif opcion == 4:
-        print(id)
+        print(lstid)
         print(lstEmpleados)
         print(lsthoras)
         print(lstValor)
