@@ -38,7 +38,7 @@ numero3 = int(input(" ingrese el tercer numero "))
 if numero1>numero2 and numero1>numero3:
     mayor= numero1
     if numero2>numero1 and numero2>numero3:
-        mayor = numero
+        mayor = numero1
     if numero1<numero2 and numero1<numero2:
         menor=numero1
 elif numero1<numero2 and numero2<numero3:
