@@ -3,8 +3,8 @@ def leerInt(msj):
     while True:
         try:
             n = int(input(msj))
-            if n < 1:
-                print("Valor invalido. Debe ser mayo a 0")
+            if n < 1 or n>160:
+                print("Valor invalido. Tiene que estar entre 1 y")
                 continue
             return n
         except ValueError:
@@ -56,35 +56,30 @@ lstEmpleados = []
 lstid = []
 lsthoras = []
 lstValor = []
-
+contadorID = 0
 while True:
     opcion = menu()
     if opcion == 1:
         print("\n\n1. Agregar Empleado")
-        contador = len(lstid)
-        print(len(lstid))
-        for i in range(0,contador+1):
-            lstid.append(i)
-            lstEmpleados.append(leerTexto("nombre?"))
-            lsthoras.append(leerInt("horas trabajadas?"))
-            lstValor.append(leerFloat("valor de la hora?"))
-            op = input("\n desea continuar s o n")
-            if op.lower() == "s":
-                contador += 1
+        contadorID +=1
+        lstid.append (contadorID)
+        lstEmpleados.append(leerTexto("nombre?"))
+        lsthoras.append(leerInt("horas trabajadas?"))
+        lstValor.append(leerFloat("valor de la hora?"))
                     
-    elif opcion == 2:
+    elif opcion == 2: 
         print("\n\n2. Modificar Campos de un empleado")
         id = leerInt("ingrese el id del empleado que desea modificar")
-        lstEmpleados[id+1]= leerTexto("ingrese el nuevo nombre del empleado")
-        lsthoras[id+1]= leerInt("ingrese las nuevas horas del empleado")
-        lstValor[id+1]= leerFloat("ingrese el nuevo valor de las horas del empleado")
+        lstEmpleados[id-1]= leerTexto("ingrese el nuevo nombre del empleado")
+        lsthoras[id-1]= leerInt("ingrese las nuevas horas del empleado")
+        lstValor[id-1]= leerFloat("ingrese el nuevo valor de las horas del empleado")
     elif opcion == 3:
         print("\n\n3. Eliminar Empleados")
         id = leerInt("ingrese el id del empleado que desea modificar")
-        lstEmpleados.remove(id)
-        lsthoras.remove(id)
-        lstValor.remove(id)
-        lstid.remove(id)
+        lstEmpleados.pop(id-1)
+        lsthoras.pop(id-1)
+        lstValor.pop(id-1)
+        lstid.pop(id-1)
     elif opcion == 4:
         print(lstid)
         print(lstEmpleados)
