@@ -69,6 +69,31 @@ def buscarporIDEmpleado(lstEmpleado):
         return
     print(lstEmpleado[posEmpl])
     input("")
+def calcularNomina(lstEmpleado):
+    print("\n\n*** 6. calcular nomina empleado\n")
+    idEmpl = leerIDEmpl()
+    posEmpl = buscarEmpleado(lstEmpleado, idEmpl)
+    sueldoFinal = 0
+    salarioBruto= 0
+    eps=0
+    pension =0
+    AUXTRANS = 140606
+    if posEmpl == -1:
+        print("El código del empleado no existe.")
+        input()
+        return
+    print("\n")
+    salarioBruto = lstEmpleado[posEmpl][2] * lstEmpleado[posEmpl][3]
+    eps = salarioBruto *0.04
+    pension = salarioBruto * 0.04
+    if salarioBruto <= 1160000:
+        salarioBruto = salarioBruto+AUXTRANS
+        sueldoFinal = salarioBruto - (eps+pension) 
+    else:
+        sueldoFinal = salarioBruto - (eps+pension) 
+
+    return lstEmpleado[posEmpl],salarioBruto, eps,pension,AUXTRANS, sueldoFinal
+
 def modificarEmpleado(lstEmpleado):
     print("\n\n2. Modificar Empleado\n")
     
@@ -141,6 +166,10 @@ def menu():
 def mostrarEmpleado(lstEmpleado):
     print(lstEmpleado)
     input("")
+
+    
+    
+    
 ## PROGRAMA PRINCIPAL
 lstEmpleado= []
 while True:
@@ -158,7 +187,8 @@ while True:
     elif op == 5:
         mostrarEmpleado(lstEmpleado)
     elif op == 6:
-        pass
+        datosEmpleado,salarioB,eps,pen,aux,sueldo = calcularNomina(lstEmpleado)
+        print("\n el empleado = ",datosEmpleado, f", tuvo un salario bruto de {salarioB:.2f} un descuento de eps de {eps:.2f}, un descuento de pension de {pen:.2f}, un auxilio de transporte de {aux:.2f} un sueldo Final de  {sueldo:.2f}")
     elif op == 7:
         pass
     elif op == 8:
