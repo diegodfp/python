@@ -167,6 +167,21 @@ def mostrarEmpleado(lstEmpleado):
     print(lstEmpleado)
     input("")
 
+def eliminar(dicc):
+    if dicc:
+        id_empleado = validacion("\nIngrese el ID del empleado a eliminar: ")
+        encontrado = False
+        for empleado in dicc.keys():
+            if empleado == id_empleado:
+                encontrado = True
+                dicc.pop(empleado)
+                print("Empleado eliminado con éxito.")
+                break
+        if not encontrado:
+            print("No se encontró ningún empleado con el ID ingresado.")
+    else:
+        print("No se han ingresado empleados.")
+
     
     
     

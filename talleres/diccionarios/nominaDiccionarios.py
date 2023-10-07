@@ -1,7 +1,8 @@
 lista = []
 dicc = {}
 empleado = []
-
+filas = 0
+columnas = 0
 
 def menu():
     print("\n")
@@ -62,7 +63,7 @@ def escoger(opcion):
         eliminar()
     elif opcion == 5:
         print("LISTAR EMPLEADO".center(50,"-"))
-        listar(dicc)
+        listar()
     elif opcion == 6:
         print("LISTAR NOMINA".center(50,"-"))
         listar_nomina()
@@ -109,7 +110,7 @@ def agregar():
     print("El empleado fue ingresado con exito")
     print("-" * 50)
 
-def modificar(dicc):
+def modificar():
     if dicc:
         id_empleado = validacion("\nIngrese el ID del empleado a modificar: ")
         encontrado = False
@@ -136,7 +137,7 @@ def modificar(dicc):
             print("-" * 50)
             input("Presione cualquier tecla para continuar")
 
-def buscar(dicc):    
+def buscar():    
     if dicc:
         id_empleado = validacion("\nIngrese el ID del empleado a buscar: ")
         encontrado = False
@@ -158,7 +159,7 @@ def buscar(dicc):
     else:
         print("No se han ingresado empleados.")
 
-def eliminar(dicc):
+def eliminar():
     if dicc:
         id_empleado = validacion("\nIngrese el ID del empleado a eliminar: ")
         encontrado = False
@@ -173,7 +174,7 @@ def eliminar(dicc):
     else:
         print("No se han ingresado empleados.")
 
-def listar(dicc):
+def listar():
     if dicc:
         lista.clear()
         for l in dicc.keys():
@@ -207,17 +208,15 @@ def listar(dicc):
                 break
 
             if contador >= total_empleados:
-                print = "No hay mas empleadospara mostrar."
-                input()
-                break   
+                opcion = input("No hay mas empleadospara mostrar. ")
+                break
 
 
             pagina += 1
     else:
         print("No se han ingresado empleados.")
 
-def listar_nomina(dicc):
-
+def listar_nomina():
     if dicc:
         id_empleado = validacion("\nIngrese el ID del empleado a buscar: ")
         encontrado = False
@@ -256,7 +255,7 @@ def listar_nomina(dicc):
         print("No se han ingresado empleados.")
         
 
-def listar_nomina_todos(dicc):
+def listar_nomina_todos():
     if dicc:
         lista.clear()
         for l in dicc.keys():
