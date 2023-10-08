@@ -11,49 +11,45 @@ def menu():
     print("6- Salir")
     print("\n")
 lista = []
-def listar(dicc,lista):
-    
+def listar(dicc):
     if dicc:
-        lista.clear()
-        for l in dicc.keys():
+            # Ordenar el diccionario por precio en orden ascendente
+            productos_ordenados = sorted(dicc.items(), key=lambda x: x[1]["precio"], reverse=True)
             
-            lista.append(l)
-        total_productos = len(dicc)
-        pagina = 1
-        contador = 0
-        continuar = True
-        
+            total_productos = len(productos_ordenados)
+            pagina = 1
+            contador = 0
+            continuar = True
 
-        while continuar:
-            print(f"\n--- Página {pagina} ---")
-            for i in range(contador, contador + 5):
-                if i < total_productos:
-                    producto = lista[i]
-                    nombre = dicc[producto]["nombre"] 
-                    precio = dicc[producto]["precio"]  
-                    valor = dicc[producto]["cantidad"] 
-                    print(f"ID: {producto}")
-                    print(f"Nombre: {nombre}")
-                    print(f"Horas trabajadas: {precio}")
-                    print(f"Valor de la hora: {valor}")
-                    print("-" * 50)
-                    
-                else:
+            while continuar:
+                print(f"\n--- Página {pagina} ---")
+                for i in range(contador, contador + 5):
+                    if i < total_productos:
+                        producto, info = productos_ordenados[i]
+                        nombre = info["nombre"]
+                        precio = info["precio"]
+                        valor = info["cantidad"]
+                        print(f"ID: {producto}")
+                        print(f"Nombre: {nombre}")
+                        print(f"Precio: {precio}")
+                        print(f"Cantidad: {valor}")
+                        print("-" * 50)
+                    else:
+                        break
+
+                contador += 5
+                opcion = input("Presione 'Enter' para ver más productos o ingrese 'M' para volver al menú: ")
+                if opcion.lower() == "m":
                     break
 
-            contador += 5
-            opcion = input("Presione 'Enter' para ver más empleados o ingrese 'M' para volver al menú: ")
-            if opcion.lower() == "m":
-                break
+                if contador >= total_productos:
+                    opcion = input("No hay más productos para mostrar. ")
+                    break
 
-            if contador >= total_productos:
-                opcion = input("No hay mas empleadospara mostrar. ")
-                break
-
-
-            pagina += 1
+                pagina += 1
     else:
-        print("No se han ingresado empleados.")
+        print("No se han ingresado productos.")    
+    
 
 def leerEntero(msg):
     while True:
@@ -64,10 +60,6 @@ def leerEntero(msg):
         except ValueError:
             print("-" * 50)
             print("Solo se permiten numeros enteros")
-            print("-" * 50)
-        except Exception as e:
-            print("-" * 50)
-            print(f"{e}")
             print("-" * 50)
 def mostrar(diccProducto):
     print(diccProducto)
@@ -100,7 +92,7 @@ def agregar(diccProducto):
     print("-" * 50)
     print("El producto fue ingresado con exito")
     print("-" * 50)
-def escoger(opcion,diccProducto,lista):
+def escoger(opcion,diccProducto):
 
     if opcion == 1:
         print("AGREGAR PRODUCTO".center(50,"-"))
@@ -117,7 +109,7 @@ def escoger(opcion,diccProducto,lista):
         mostrar(diccProducto)
     elif opcion == 5:
         print("ESTRATEGIA DE MERCADEO".center(50,"-"))
-        listar(diccProducto,lista)
+        listar(diccProducto)
     elif opcion == 6:
         print("¡Hasta luego!".center(50,"-"))
         salir = leerTexto("Presione cualquier tecla para volver al menú o ingrese 'S' para salir: ")
@@ -174,9 +166,9 @@ def eliminar(diccProducto):
 
 ###### MAIN PROGRAM ######
 diccProductos = {}
-lista = []
+
 while True:
     input("\nPRESIONE CUALQUIER TECLA PARA CONTINUAR AL PROGRAMA MENU")
     menu()
-    escoger(int(input("Opcion 1 a 6: ")),diccProductos,lista)
+    escoger(int(input("Opcion 1 a 6: ")),diccProductos)
     print("\n")
