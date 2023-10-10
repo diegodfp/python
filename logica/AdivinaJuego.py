@@ -2,14 +2,16 @@ from random import *
 
 def generarAleatorio():
     return randint(1, 1000)
-
+def listarJugadores(jugadores):
+    for nombre, vidas in jugadores.items():
+        print(f"El jugador {nombre} tuvo {vidas} vidas")
 
 
 def juego(jugadores):
     
     nombre = input("Ingrese su nombre")
     aleatorio = generarAleatorio()
-    vidas=2
+    vidas=10
     print("Adivina el numero entre 1 y 1000")
     print(f"Tienes {vidas} vidas")
     num = int(input("Introduce un numero: "))
@@ -25,12 +27,14 @@ def juego(jugadores):
             print("\n")
             num = int(input("Introduce un numero: "))
         else:
-            return print("has acertado")
-            jugadores[nombre] = 
+            print("has acertado")
+            jugadores[nombre]= vidas
+            listarJugadores(jugadores)
+            break
     if vidas  == 1 :
         print("has perdido, te quedaste sin vidas")
         print(f"el numero era: {aleatorio}")
-
+    
 
 ###### MAIN PROGRAM ####
 jugadores = {}
