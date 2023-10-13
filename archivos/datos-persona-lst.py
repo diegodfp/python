@@ -110,6 +110,41 @@ def agregarPersonal(lstPersonal, ruta):
         input("El empleado ha sido registrado con éxito.\nPresione cualquier tecla para continuar...")
     else:
         input("Ocurrio algún error al guardar el empleado.")
+        
+def buscarEmpleado(lstPersonal, id):
+    # Función para buscar un empleado por su ID.
+    # Devuelve el índice en la lista donde se encuentra el empleado o -1 si no se encuentra.
+    for i, datos in enumerate(lstPersonal):
+        k = int(list(datos.keys())[0])
+        if k == id:
+            return i
+    return -1
+
+def modificarEmpleado(lstPersonal, rutaFile):
+    print("\n\n2. Modificar Personal")
+    
+    id = int(input("Ingrese el ID del empleado que desea modificar: "))
+    index = buscarEmpleado(lstPersonal, id)
+    
+    if index == -1:
+        print("No existe un empleado con ese ID")
+        input("Presione cualquier tecla para continuar\n")
+    else:
+        # Se ha encontrado al empleado, procedemos a modificar sus datos
+        nombre = input("Nuevo nombre: ")
+        edad = int(input("Nueva edad: "))
+        sexo = input("Nuevo sexo (M/F): ")
+        telefono = input("Nuevo teléfono: ")
+        
+        dicEmpleado = {id: {"nombre": nombre, "edad": edad, "sexo": sexo, "telefono": telefono}}
+        lstPersonal[index] = dicEmpleado
+        
+        if guardarEmpleado(lstPersonal, rutaFile):
+            print("El empleado ha sido modificado con éxito.")
+            input("Presione cualquier tecla para continuar\n")
+        else:
+            print("Ocurrió un error al modificar el empleado.")
+            input("Presione cualquier tecla para continuar\n")
 
 def menu():
     while True:
