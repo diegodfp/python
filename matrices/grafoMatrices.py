@@ -25,12 +25,7 @@ def verificarRutaDirecta(grafo, ciudadOrigen, ciudadDestino, ciudades):
     except ValueError:
         return False
 
-def imprimirMatriz(grafo, ciudades):
-    print("Matriz de Adyacencia:")
-    print("   " + " ".join(ciudades))
-    for i in range(len(grafo)):
-        fila = " ".join(map(str, grafo[i]))
-        print(ciudades[i] + " " + fila)
+############ main program ##########
 
 nCiudades = int(input("Ingrese la cantidad de ciudades: "))
 grafo, ciudades = crearGrafo(nCiudades)
@@ -38,20 +33,18 @@ grafo, ciudades = crearGrafo(nCiudades)
 while True:
     print("\nOpciones:")
     print("1. Verificar si hay ruta directa entre dos ciudades")
-    print("2. Imprimir la matriz de adyacencia")
-    print("3. Salir")
-    opcion = input("Elija una opción (1/2/3): ")
+    print("2. Salir")
+    opcion = input("Elija una opción (1/2): ")
 
     if opcion == "1":
         ciudadOrigen = input("Ingrese la ciudad de origen: ")
         ciudadDestino = input("Ingrese la ciudad de destino: ")
         if verificarRutaDirecta(grafo, ciudadOrigen, ciudadDestino, ciudades):
             print("¡Hay ruta directa!")
+            input("")
         else:
             print("No hay ruta directa.")
     elif opcion == "2":
-        imprimirMatriz(grafo, ciudades)
-    elif opcion == "3":
         break
     else:
         print("Opción no válida. Intente de nuevo.")
