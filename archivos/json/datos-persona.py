@@ -21,14 +21,7 @@ def menu():
         except ValueError:
             print ("Debe ser un numero entero. Intente de nuevo.")
 def cargarInfo(lstPersonal,rutaFile):
-    try:
-        fd = open(rutaFile, "r ")   
-    except Exception as e:
-        try:
-            fd = open(rutaFile, "w")
-        except Exception as d:
-            print("Error. Al intentar abrir el archivo\n", d)
-            return None
+    
     try:
         linea = fd.readline()
         if linea.strip() != "":
