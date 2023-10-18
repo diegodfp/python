@@ -76,6 +76,12 @@ def escoger(opcion):
         print("Opción inválida. Intente nuevamente.")
         input("Presione cualquier tecla para continuar")
 
+def ordenarDiccionario(diccLibro):
+    diccOrdenado = {}
+    for idLibro in sorted(diccLibro):
+        diccOrdenado[idLibro] = diccLibro[idLibro]
+    return diccOrdenado
+
 ### funcion para leer y validar datos(enteros y texto)
 def leerValHoraEmpl():
     while True:

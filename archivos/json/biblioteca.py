@@ -6,7 +6,10 @@ def menu():
     print(" MENU ".center(100,"="))
     print("1 - INSERTAR")
     print("2 - CONSULTAR")
-    print("3 - SALIR")
+    print("3 - MODIFICAR")
+    print("4- MODIFICAR")
+    print("5 - MODIFICAR")
+    print("6 - SALIR")
     print("\n")
 
 def cargarRuta(ruta):    
@@ -61,9 +64,13 @@ def escribirEnDisco(ruta, dicc):
         json.dump(dicc, archivo)
     if not archivo.closed:
         archivo.close()
+def ordenarDiccionario(diccLibro):
+    diccOrdenado = {}
+    for idLibro in sorted(diccLibro, key = lambda x:int(x)):
+        diccOrdenado[idLibro] = diccLibro[idLibro]
+    return diccOrdenado
 def ingresarLibro(diccLibro):
-    idLibro = validacion("Ingrese la ID del libro: ")
-    existente = True
+    idLibro = str(validacion("Ingrese la ID del libro: "))
     existente = comprobarDicc(diccLibro, idLibro)
     if not existente:
         return print("*****Ya se ha ingresado este ID del libro*****")
@@ -74,6 +81,8 @@ def ingresarLibro(diccLibro):
     diccLibro[idLibro]["autor"] = autorLibro
     diccLibro[idLibro]["precio"] = precio
     escribirEnDisco(ruta, diccLibro)
+    diccOrdenado = ordenarDiccionario(diccLibro)
+    escribirEnDisco(ruta,diccOrdenado)
     print("Proceso realizado".center(50, "-"))
 
 def mostrarLibros(diccLibro):
@@ -90,6 +99,23 @@ def mostrarLibros(diccLibro):
             print("-" * 50)
     else:
         print("no se han encontrado libros")
+def editarLibros(diccLibro):
+    idLibro = str(validacion("Ingrese la ID del libro: "))
+    existente = comprobarDicc(diccLibro, idLibro)
+    if not existente:
+        tituloLibro = input("Nuevo titulo: ")
+        autorLibro = (input("Nueva autor: "))
+        precio = int(input("Nuevo precio"))
+        diccLibro[idLibro]["titulo"] = tituloLibro
+        diccLibro[idLibro]["autor"] = autorLibro
+        diccLibro[idLibro]["precio"] = precio
+        escribirEnDisco(ruta, diccLibro)
+        escribirEnDisco(ruta, diccLibro)
+        print("El empleado ha sido modificado con éxito.")
+        input("Presione cualquier tecla para continuar\n")
+        
+    else:
+        return print(" no hay un empleado con ese id")
 def escoger(opcion,diccBiblio):
     print("\n")
     if opcion == 1:
@@ -99,8 +125,17 @@ def escoger(opcion,diccBiblio):
     elif opcion == 2:
         print("libros".center(100,"="))
         mostrarLibros(diccBiblio)
-
     elif opcion == 3:
+        print("libros".center(100,"="))
+        editarLibros(diccBiblio)
+    elif opcion == 4:
+        print("libros".center(100,"="))
+        mostrarLibros(diccBiblio)
+    elif opcion == 5:
+        print("libros".center(100,"="))
+        mostrarLibros(diccBiblio)
+
+    elif opcion == 6:
         print("¡Hasta luego!".center(100,"="))
         salir = validacionTexto("Presione cualquier tecla para salir o ingrese 'R' para regresar: ")
         if not salir.lower() == "r":
@@ -111,11 +146,11 @@ def escoger(opcion,diccBiblio):
 
 
 ##### MAIN CODE ####
-ruta = "C:\\Users\\campus\\Documents\\python\\biblioteca.json"
+ruta = "/home/spukN01-019/Documents/Diego/python/archivos/json/biblioteca.json"
 
 while True:
   diccBiblioteca = cargarRuta(ruta)
   input("\nPRESIONE CUALQUIER TECLA PARA CONTINUAR AL PROGRAMA MENU")
   menu()
-  escoger(validacion("Opcion 1 a 4: "),diccBiblioteca)
+  escoger(validacion("Opcion 1 a 3: "),diccBiblioteca)
   print("\n")
