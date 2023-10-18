@@ -1,0 +1,10 @@
+def menu():
+    print("\n")
+    print(" TIC-TOC ".center(100,"="))
+    print(" MENU ".center(100,"*"))
+    print("1 - NUEVO JUEGO".center(100))
+    print("2 - TABLA DE PUNTUACIONES".center(100))
+    print("3 - SALIR".center(100))
+    print("\n")
+
+menu()
