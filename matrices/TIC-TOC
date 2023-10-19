@@ -6,5 +6,206 @@ def menu():
     print("2 - TABLA DE PUNTUACIONES".center(100))
     print("3 - SALIR".center(100))
     print("\n")
+def crearMatrices():
+    m = []
+    for i in range(3):
+        fila = [0] * 3
+        m.append(fila)
+    return m 
+def printMatriz(mat):
+    
+    for f in range(len(mat)):
+        print("+------+------+------+")
+        print("|      |      |      |")  
+        for c in range(len(mat[f])):
+            print("| ",mat[f][c], end="   ")
+        print("|")
+        print("|      |      |      |")
+    print("+------+------+------+")
 
-menu()
+def llenarMatriz(mat): ### llenado por filas
+    contador = 1
+    for f in range(len(mat)):
+        for c in range(len(mat[f])):
+            mat[f][c]= contador 
+            contador += 1
+        print("")
+def validacion(msg):
+    while True:
+        try:
+            numero = int(input(msg))
+            if (numero >= 1 and numero <= 3 ):
+                return numero
+        except ValueError:
+            print("-" * 50)
+            print("Solo se permiten numeros enteros")
+            print("-" * 50)
+        except Exception as e:
+            print("-" * 50)
+            print(f"{e}")
+            print("-" * 50)
+def validacionFicha(msg):
+    while True:
+        try:
+            numero = int(input(msg))
+            if numero == 1 or numero == 2:
+                return numero
+            else:
+                ("Recuerda que la opcionde debe ser 1 o 2")
+        except ValueError:
+            print("-" * 50)
+            print("Solo se permiten numeros enteros")
+            print("-" * 50)
+        except Exception as e:
+            print("-" * 50)
+            print(f"{e}")
+            print("-" * 50)
+def validacionPosicion(msg,disponibles):
+    while True:
+        try:
+            numero = int(input(msg))
+            if numero in disponibles:
+                disponibles.discard(numero)
+                return numero, disponibles
+            else:
+                print ("El numero no se encuentra disponible, intenta con otro")
+                continue
+        except ValueError:
+            print("-" * 50)
+            print("Solo se permiten numeros enteros")
+            print("-" * 50)
+        except Exception as e:
+            print("-" * 50)
+            print(f"{e}")
+            print("-" * 50)
+
+def modificarMatrizX(posicion,matriz):
+    if posicion == 1:
+        matriz[0][0] = 'X'
+    elif posicion == 2:
+        matriz[0][1] = 'X'
+    elif posicion == 3:
+        matriz[0][2] = 'X'
+    elif posicion == 4:
+        matriz[1][0] = 'X'
+    elif posicion == 5:
+        matriz[1][1] = 'X'
+    elif posicion == 6:
+        matriz[1][2] = 'X'
+    elif posicion == 7:
+        matriz[2][0] = 'X'
+    elif posicion == 8:
+        matriz[2][1] = 'X'
+    elif posicion == 9:
+        matriz[2][2] = 'X'
+def modificarMatrizY(posicion,matriz):
+    if posicion == 1:
+        matriz[0][0] = 'O'
+    elif posicion == 2:
+        matriz[0][1] = 'O'
+    elif posicion == 3:
+        matriz[0][2] = 'O'
+    elif posicion == 4:
+        matriz[1][0] = 'O'
+    elif posicion == 5:
+        matriz[1][1] = 'O'
+    elif posicion == 6:
+        matriz[1][2] = 'O'
+    elif posicion == 7:
+        matriz[2][0] = 'O'
+    elif posicion == 8:
+        matriz[2][1] = 'O'
+    elif posicion == 9:
+        matriz[2][2] = 'O'
+def leerTexto(msg):
+    while True:
+        try:
+            texto = input(msg)
+            if texto.isalpha() or not texto.isspace():
+                return texto
+            else:
+                print("-" * 50)
+                print("Solo se permiten letras")
+                print("-" * 50)
+        except Exception as e:
+            print("-" * 50)
+            print(f"{e}")
+            print("-" * 50)
+def quienPrimero(jugador1,jugador2):
+    print("*** hora de escoger cual jugador iniciara primero:***".center(50))
+    ficha = validacionFicha(f"presione  1 si quiere que el jugador: {jugador1} inicie primero o 2 si quiere que inicie de primero el jugador {jugador2}")
+    if ficha == 1:
+        return jugador1, jugador2
+    else:
+        return jugador2, jugador1
+def verificarGanador(matriz):
+    for f in range(len(matriz)):
+            if (matriz[f][0] == matriz[f][1] and matriz[f][0] == matriz[f][2]   ):
+                return True
+    for c in range(len(matriz)):
+            if (matriz[0][c] == matriz[1][c] and matriz[0][c] == matriz[2][c]   ):
+                return True
+    if (matriz[0][0] == matriz[1][1] and matriz[0][0] == matriz[2][2] ):
+        return True
+    if (matriz[0][2] == matriz[1][1] and matriz[0][2] == matriz[2][0] ):
+        return True
+def jugar(fichaX,FichaO,matriz):
+    disponibles = {1,2,3,4,5,6,7,8,9}
+    contadorJugadas = -1
+    cJugadorX = 0
+    cJugadorY = 0
+    printMatriz(matriz)
+    while contadorJugadas < 9:    
+        posicionX,disponibles = validacionPosicion(f'|{fichaX}| Por favor, escoga una casilla para tu ficha X ',disponibles)
+        modificarMatrizX(posicionX,matriz)
+        cJugadorX +=1
+        printMatriz(matriz)
+        if verificarGanador(matriz) != True:
+            print(f" Recuerda, solo se encuentran disponibles los numero {disponibles}")
+            posicionY,disponibles = validacionPosicion(f'|{FichaO}| Por favor, escoga una casilla para tu ficha O ',disponibles)
+            modificarMatrizY(posicionY,matriz)
+            cJugadorY += 1
+            
+            contadorJugadas += 2
+            print("*"*30,contadorJugadas)
+            printMatriz(matriz)
+            if verificarGanador(matriz) != True:
+                print(f" Recuerda, solo se encuentran disponibles los numero {disponibles}")
+                
+            else:
+                print(f" felicitaciones ya hay ganador {FichaO}")
+                input("")
+                return FichaO
+        else:
+            print(f" felicitaciones ya hay ganador {fichaX}")
+            input("")
+            return fichaX
+        
+    input(" hubo un empate, presiona cualquier tecla para volver al menu")
+def escoger(opcion,matriz):
+    print("\n")
+    if opcion == 1:
+        print("INICIAR JUEGO".center(100,"="))
+        jugador1 = leerTexto("ingrese el nombre del jugador Numero 1:  ")
+        jugador2 = leerTexto("ingrese el nombre del jugador Numero 2:  ")
+        fichaX,FichaO = quienPrimero(jugador1,jugador2)
+        jugar(fichaX,FichaO,matriz)
+    elif opcion == 2:
+        print("¡Hasta luego!".center(100,"="))
+        salir = leerTexto("Presione cualquier tecla para salir o ingrese 'R' para regresar: ")
+        if not salir.lower() == "r":
+            exit()
+
+
+
+
+
+
+while True:
+    matriz = crearMatrices()
+    llenarMatriz(matriz)
+    menu()
+    escoger(validacion("Opcion 1 a 4: "),matriz)
+    print("\n")
+    
+
