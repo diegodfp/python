@@ -1,6 +1,6 @@
 import json
 import time
-import colorama
+
 def cargarRuta(ruta):
     try:
         with open(ruta, "r") as archivo:
@@ -36,7 +36,7 @@ def menu():
     print("2 - TABLA DE PUNTUACIONES".center(100))
     print("3 - SALIR".center(100))
     print("\n")
-def crearMatrices():
+def crearMatrices():    
     m = []
     for i in range(3):
         fila = [0] * 3
@@ -235,21 +235,24 @@ def jugar(fichaX,FichaO,matriz):
             return fichaX, tiempoTotalX, cJugadorX
         
     input(" hubo un empate , presiona cualquier tecla para volver al menu")
-def imprimirTabla(dicc):
-    print("+------+--------------+-------------+------------+")  # Línea superior de la tabla
-    print("| #    | Nombre       | Movimientos | Tiempo     |")  # Encabezados de columna
-    print("+------+--------------+-------------+------------+")  # Línea divisoria
-
-    for i, registro in enumerate(dicc):
+def imprimirTabla(lista):
+    print("+-------------TABLA DE POSICIONES-----------------+")
+    print("+------+--------------+-------------+-------------+")  
+    print("| #    | Nombre       | Movimientos | Tiempo      |")  
+    print("+------+--------------+-------------+-------------+")  
+    contador = 0
+    for i, registro in enumerate(lista):
         numero = i + 1
         nombre = registro["nombre"]
         movimientos = registro["movimientos"]
         tiempo = registro["tiempo"]
-
-        # Formatear los valores en columnas usando f-strings
-        print(f"| {numero:<4} | {nombre:<12} | {movimientos:<11} | {tiempo:.2f}       |")
-
-    print("+------+--------------+-------------+------------+"  )# Línea inferior de la tabla
+        print(f"| {numero:<4} | {nombre:<12} | {movimientos:<11} | {tiempo:<5.2f}       |")
+        print("+------+--------------+-------------+-------------+")
+        contador += 1
+        if contador % 3 == 0:
+            opcion = input("Presiona 'q' para salir, o cualquier otra tecla si quieres ver mas registros")
+            if opcion.lower() == "q":
+                break
 def escoger(opcion,matriz,ruta,registros):
     print("\n")
     if opcion == 1:
@@ -275,7 +278,7 @@ def escoger(opcion,matriz,ruta,registros):
 
 
 
-ruta = "/home/spukN01-019/Documents/Diego/python/matrices/puntajes.json"
+ruta = "matrices\\puntajes.json"
 
 while True:
     registros = cargarRuta(ruta)
