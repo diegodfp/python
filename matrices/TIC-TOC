@@ -223,14 +223,14 @@ def jugar(fichaX,FichaO,matriz):
                     print(f" Recuerda, solo se encuentran disponibles los numero {disponibles}")
                     
                 else:
-                    print(f" 🎉🎉🎉 felicitaciones  \x1b[1;34m{FichaO}\x1b[0m has ganado!, usaste \x1b[1;34m{cJugadorY} movimientos y un tiempo de \x1b[1;34m{tiempoTotalY:.3f}".center(100))
+                    print(f" 🎉🎉🎉 felicitaciones  \x1b[1;34m{FichaO}\x1b[0m has ganado!, usaste \x1b[1;34m{cJugadorY}\x1b[0m  movimientos y un tiempo de \x1b[1;34m{tiempoTotalY:.3f}\x1b[0m ".center(100))
                     input("")
                     return FichaO, tiempoTotalX, cJugadorY
             else:
                 break
         else:
             print("\n")
-            print(f" 🎉🎉🎉felicitaciones  \x1b[1;31m{fichaX}\x1b[0m has ganado!, usaste \x1b[1;31m{cJugadorX}\x1b[0m movimientos y un tiempo de \x1b[1;31m{tiempoTotalX:.3f} ".center(100))
+            print(f" 🎉🎉🎉felicitaciones  \x1b[1;31m{fichaX}\x1b[0m has ganado!, usaste \x1b[1;31m{cJugadorX}\x1b[0m movimientos y un tiempo de \x1b[1;31m{tiempoTotalX:.3f} \x1b[0m ".center(100))
             input("")
             return fichaX, tiempoTotalX, cJugadorX
         
