@@ -1,19 +1,37 @@
 import json
 import time
-
-def cargarRuta(ruta):    
-    dicc = {}
+import colorama
+def cargarRuta(ruta):
     try:
         with open(ruta, "r") as archivo:
-            dicc = json.load(archivo)
-        return dicc
-    except:
-        with open(ruta, "w") as archivo:
-            return dicc
+            lista_de_registros = json.load(archivo)
+        return lista_de_registros
+    except FileNotFoundError:
+        return []
+def ordenarGanadores(registros):
+    registrosOrdenados = sorted(registros, key=lambda x: (x["movimientos"], x["tiempo"]))
+    return registrosOrdenados
+
+def registrarGanador(nombreGanador, tiempoGanador, movimientos, ruta, registros):
+    nuevo_registro = {
+        "nombre": nombreGanador,
+        "tiempo": tiempoGanador,
+        "movimientos": movimientos
+    }
+
+    registros.append(nuevo_registro)
+    escribirEnDisco(ruta, registros)
+    registrosOrdenados  = ordenarGanadores(registros)
+    escribirEnDisco(ruta,registrosOrdenados)
+def escribirEnDisco(ruta, registros):
+    with open(ruta, "w") as archivo:
+        json.dump(registros, archivo)
+
+
 def menu():
     print("\n")
     print(" TIC-TOC ".center(100,"="))
-    print(" MENU ".center(100,"*"))
+    print(" MENU ".center(99,"*"))
     print("1 - NUEVO JUEGO".center(100))
     print("2 - TABLA DE PUNTUACIONES".center(100))
     print("3 - SALIR".center(100))
@@ -48,6 +66,8 @@ def validacion(msg):
             numero = int(input(msg))
             if (numero >= 1 and numero <= 3 ):
                 return numero
+            else:
+                print("recuerde que el valor debe estar entre 1 y 3")
         except ValueError:
             print("-" * 50)
             print("Solo se permiten numeros enteros")
@@ -130,7 +150,7 @@ def validacionPosicion(msg,disponibles):
 #     elif posicion == 9:
         # matriz[2][2] = 'O'
 def modificarMatriz(jugador, posicion, matriz):
-    marca = 'X' if jugador == 1 else 'O'
+    marca = '\x1b[1;31mX\x1b[0m' if jugador == 1 else '\x1b[1;34mO\x1b[0m'
     fila = (posicion - 1) // 3
     columna = (posicion - 1) % 3
     matriz[fila][columna] = marca
@@ -149,14 +169,7 @@ def leerTexto(msg):
             print("-" * 50)
             print(f"{e}")
             print("-" * 50)
-def escribirEnDisco(nombreGanador,tiempoGanador,movimientos,ruta,dicc):
-    dicc["nombre"] = nombreGanador
-    dicc["tiempo"] = tiempoGanador
-    dicc["movimientos"] = movimientos
-    with open(ruta, "w") as archivo:
-        json.dump(dicc, archivo)
-    if not archivo.closed:
-        archivo.close()
+
 def quienPrimero(jugador1,jugador2):
     print("*** hora de escoger cual jugador iniciara primero:***".center(50))
     ficha = validacionFicha(f"presione  1 si quiere que el jugador: {jugador1} inicie primero o 2 si quiere que inicie de primero el jugador {jugador2}")
@@ -188,7 +201,7 @@ def jugar(fichaX,FichaO,matriz):
     printMatriz(matriz)
     while True:
         inicioTiempoX = time.time()   
-        posicionX,disponibles = validacionPosicion(f'|{fichaX}| Por favor, escoga una casilla para tu ficha X ',disponibles)
+        posicionX,disponibles = validacionPosicion(f'|\x1b[1;31m{fichaX}\x1b[0m  Por favor, escoga una casilla para tu ficha X ',disponibles)
         finTiempoX = time.time()
         tiempoX = finTiempoX - inicioTiempoX
         tiempoTotalX += tiempoX
@@ -199,7 +212,7 @@ def jugar(fichaX,FichaO,matriz):
             if disponibles:
                 print(f" Recuerda, solo se encuentran disponibles los numero {disponibles}")
                 inicioTiempoY = time.time()  
-                posicionY,disponibles = validacionPosicion(f'|{FichaO}| Por favor, escoga una casilla para tu ficha O ',disponibles)
+                posicionY,disponibles = validacionPosicion(f'\x1b[1;34m{FichaO}\x1b[0m Por favor, escoga una casilla para tu ficha O ',disponibles)
                 finTiempoY = time.time()
                 tiempoY = finTiempoY - inicioTiempoY
                 tiempoTotalY += tiempoY
@@ -210,27 +223,50 @@ def jugar(fichaX,FichaO,matriz):
                     print(f" Recuerda, solo se encuentran disponibles los numero {disponibles}")
                     
                 else:
-                    print(f" 🎉🎉🎉 felicitaciones ya hay ganador {FichaO}")
+                    print(f" 🎉🎉🎉 felicitaciones  \x1b[1;34m{FichaO}\x1b[0m has ganado!, usaste \x1b[1;34m{cJugadorY} movimientos y un tiempo de \x1b[1;34m{tiempoTotalY:.3f}".center(100))
                     input("")
                     return FichaO, tiempoTotalX, cJugadorY
             else:
                 break
         else:
-            print(f" 🎉🎉🎉felicitaciones ya hay ganador {fichaX}")
+            print("\n")
+            print(f" 🎉🎉🎉felicitaciones  \x1b[1;31m{fichaX}\x1b[0m has ganado!, usaste \x1b[1;31m{cJugadorX}\x1b[0m movimientos y un tiempo de \x1b[1;31m{tiempoTotalX:.3f} ".center(100))
             input("")
             return fichaX, tiempoTotalX, cJugadorX
         
-    input(" hubo un empate, presiona cualquier tecla para volver al menu")
-def escoger(opcion,matriz,ruta,dicc):
+    input(" hubo un empate , presiona cualquier tecla para volver al menu")
+def imprimirTabla(dicc):
+    print("+------+--------------+-------------+------------+")  # Línea superior de la tabla
+    print("| #    | Nombre       | Movimientos | Tiempo     |")  # Encabezados de columna
+    print("+------+--------------+-------------+------------+")  # Línea divisoria
+
+    for i, registro in enumerate(dicc):
+        numero = i + 1
+        nombre = registro["nombre"]
+        movimientos = registro["movimientos"]
+        tiempo = registro["tiempo"]
+
+        # Formatear los valores en columnas usando f-strings
+        print(f"| {numero:<4} | {nombre:<12} | {movimientos:<11} | {tiempo:.2f}       |")
+
+    print("+------+--------------+-------------+------------+"  )# Línea inferior de la tabla
+def escoger(opcion,matriz,ruta,registros):
     print("\n")
     if opcion == 1:
         print("INICIAR JUEGO".center(100,"="))
         jugador1 = leerTexto("ingrese el nombre del jugador Numero 1:  ")
         jugador2 = leerTexto("ingrese el nombre del jugador Numero 2:  ")
         fichaX,FichaO = quienPrimero(jugador1,jugador2)
-        nombreGanador,tiempoGanador,movimientos = jugar(fichaX,FichaO,matriz)
-        escribirEnDisco(nombreGanador,tiempoGanador,movimientos,ruta,dicc)
-    elif opcion == 2:
+        try:
+            nombreGanador,tiempoGanador,movimientos = jugar(fichaX,FichaO,matriz)
+            registrarGanador(nombreGanador,tiempoGanador,movimientos,ruta,registros)
+        except:
+            pass
+    elif opcion ==2 :
+        imprimirTabla(registros)
+        input("presione cualquier tecla para volver al menu de inicio")
+        pass
+    elif opcion == 3:
         print("¡Hasta luego!".center(100,"="))
         salir = leerTexto("Presione cualquier tecla para salir o ingrese 'R' para regresar: ")
         if not salir.lower() == "r":
@@ -239,14 +275,14 @@ def escoger(opcion,matriz,ruta,dicc):
 
 
 
-ruta = "C:\\Users\\DIEGO\\Documents\\Pythonpython\\matrices\\puntajes.json"
+ruta = "/home/spukN01-019/Documents/Diego/python/matrices/puntajes.json"
 
 while True:
-    dicc = cargarRuta(ruta)
+    registros = cargarRuta(ruta)
     matriz = crearMatrices()
     llenarMatriz(matriz)
     menu()
-    escoger(validacion("Opcion 1 a 4: "),matriz,ruta,dicc)
+    escoger(validacion("Opcion 1 a 3: "),matriz,ruta,registros)
     print("\n")
     
 
