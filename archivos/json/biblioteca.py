@@ -72,10 +72,12 @@ def ordenarDiccionario(diccLibro):
 def ingresarLibro(diccLibro):
     idLibro = str(validacion("Ingrese la ID del libro: "))
     existente = comprobarDicc(diccLibro, idLibro)
-    if not existente:
-        return print("*****Ya se ha ingresado este ID del libro*****")
+    while not existente:
+        print("Ya existe un libro con esta ID intente nuevamente")
+        idLibro = str(validacion("Ingrese la ID del libro: "))
+        existente = comprobarDicc(diccLibro, idLibro)
     tituloLibro = validacionTexto("Ingrese el Titulo del libro: ") 
-    autorLibro = validacionTexto("Ingrese el Titulo del libro: ")
+    autorLibro = validacionTexto("Ingrese el Nombre del autor del libro: ")
     precio = validacion("Ingrese el precio del libro: ")
     diccLibro[idLibro]["titulo"] = tituloLibro
     diccLibro[idLibro]["autor"] = autorLibro
@@ -133,41 +135,41 @@ def listarLibros(diccLibro):
     opcion = validacion("Elija una opción para listar libros:\n1 - Por Autor\n2 - Por Nombre del Libro\n3 - Por Precio\nOpción: ")
 
     if opcion == 1:
-        autor = validacionTexto("Ingrese el autor para listar los libros: ")
-        libros_autor = [libro for libro in diccLibro.values() if libro.get("autor", "") == autor]
-        if libros_autor:
-            libros_autor_ordenados = sorted(libros_autor, key=lambda x: x["autor"])
-            for libro in libros_autor_ordenados:
-                print(f"ID del Libro: {libro['id']}")
+        if diccLibro:
+            # Ordena el diccionario por el nombre del autor y obtiene una lista de (ID, libro)
+            librosAutorOrdenados = sorted(diccLibro.items(), key=lambda x: x[1]["autor"].lower())
+            for idLibro, libro in librosAutorOrdenados:
+                print(f"ID: {idLibro}")
                 print(f"Título: {libro['titulo']}")
                 print(f"Autor: {libro['autor']}")
                 print(f"Precio: {libro['precio']}")
                 print("-" * 50)
         else:
-            print("No se encontraron libros con ese autor.")
+            print("No hay libros para mostrar.")
 
     elif opcion == 2:
-        nombre_libro = validacionTexto("Ingrese el nombre del libro para listar los libros: ")
-        libros_nombre = [libro for libro in diccLibro.values() if libro.get("titulo", "") == nombre_libro]
-        if libros_nombre:
-            libros_nombre_ordenados = sorted(libros_nombre, key=lambda x: x["titulo"])
-            for libro in libros_nombre_ordenados:
-                print(f"ID del Libro: {libro['id']}")
+        if diccLibro:
+            librosTituloOrdenados = sorted(diccLibro.items(), key=lambda x: x[1]["titulo"].lower())
+            for idLibro, libro in librosTituloOrdenados:
+                print(f"ID: {idLibro}")
                 print(f"Título: {libro['titulo']}")
                 print(f"Autor: {libro['autor']}")
                 print(f"Precio: {libro['precio']}")
                 print("-" * 50)
         else:
-            print("No se encontraron libros con ese nombre.")
+            print("No hay libros para mostrar.")
 
     elif opcion == 3:
-        libros_ordenados_por_precio = sorted(diccLibro.values(), key=lambda x: x.get("precio", 0))
-        for libro in libros_ordenados_por_precio:
-            print(f"ID del Libro: {libro['id']}")
-            print(f"Título: {libro['titulo']}")
-            print(f"Autor: {libro['autor']}")
-            print(f"Precio: {libro['precio']}")
-            print("-" * 50)
+        if diccLibro:
+            librosTituloOrdenados = sorted(diccLibro.items(), key=lambda x: (x[1]["precio"]))
+            for idLibro, libro in librosTituloOrdenados:
+                print(f"ID: {idLibro}")
+                print(f"Título: {libro['titulo']}")
+                print(f"Autor: {libro['autor']}")
+                print(f"Precio: {libro['precio']}")
+                print("-" * 50)
+        else:
+            print("No hay libros para mostrar.")
 def eliminarLibro(diccLibro):
     idLibro = str(validacion("Ingrese la ID del libro que desea eliminar: "))
     if idLibro in diccLibro:
@@ -193,7 +195,7 @@ def escoger(opcion,diccBiblio):
         eliminarLibro(diccBiblio)
     elif opcion == 5:
         print("libros".center(100,"="))
-        mostrarLibros(diccBiblio)
+        listarLibros(diccBiblio)
 
     elif opcion == 6:
         print("¡Hasta luego!".center(100,"="))
@@ -206,7 +208,7 @@ def escoger(opcion,diccBiblio):
 
 
 ##### MAIN CODE ####
-ruta = "/home/spukN01-019/Documents/Diego/python/archivos/json/biblioteca.json"
+ruta = "C:\\Users\\campus\\Documents\\python\\biblioteca.json"
 
 while True:
     diccBiblioteca = cargarRuta(ruta)
