@@ -7,8 +7,8 @@ def menu():
     print("1 - INSERTAR")
     print("2 - CONSULTAR")
     print("3 - MODIFICAR")
-    print("4- MODIFICAR")
-    print("5 - MODIFICAR")
+    print("4-  ELIMINAR")
+    print("5 - LISTAR LIBROS")
     print("6 - SALIR")
     print("\n")
 
@@ -102,20 +102,80 @@ def mostrarLibros(diccLibro):
 def editarLibros(diccLibro):
     idLibro = str(validacion("Ingrese la ID del libro: "))
     existente = comprobarDicc(diccLibro, idLibro)
+    
     if not existente:
-        tituloLibro = input("Nuevo titulo: ")
-        autorLibro = (input("Nueva autor: "))
-        precio = int(input("Nuevo precio"))
-        diccLibro[idLibro]["titulo"] = tituloLibro
-        diccLibro[idLibro]["autor"] = autorLibro
-        diccLibro[idLibro]["precio"] = precio
-        escribirEnDisco(ruta, diccLibro)
-        escribirEnDisco(ruta, diccLibro)
-        print("El empleado ha sido modificado con éxito.")
-        input("Presione cualquier tecla para continuar\n")
+        print("Elija el campo que desea modificar:")
+        print("1 - Título del libro")
+        print("2 - Autor del libro")
+        print("3 - Precio del libro")
         
+        opcion = validacion("Opción: ")
+        
+        if opcion == 1:
+            nuevoValor = validacionTexto("Nuevo título: ")
+            diccLibro[idLibro]["titulo"] = nuevoValor
+        elif opcion == 2:
+            nuevoValor = validacionTexto("Nuevo autor: ")
+            diccLibro[idLibro]["autor"] = nuevoValor
+        elif opcion == 3:
+            nuevoValor = validacion("Nuevo precio: ")
+            diccLibro[idLibro]["precio"] = nuevoValor
+        else:
+            print("Opción inválida.")
+            return
+
+        escribirEnDisco(ruta, diccLibro)
+        print("El libro ha sido modificado con éxito.")
+        input("Presione cualquier tecla para continuar\n")
     else:
-        return print(" no hay un empleado con ese id")
+        print("No hay un libro con ese ID.")
+def listarLibros(diccLibro):
+    opcion = validacion("Elija una opción para listar libros:\n1 - Por Autor\n2 - Por Nombre del Libro\n3 - Por Precio\nOpción: ")
+
+    if opcion == 1:
+        autor = validacionTexto("Ingrese el autor para listar los libros: ")
+        libros_autor = [libro for libro in diccLibro.values() if libro.get("autor", "") == autor]
+        if libros_autor:
+            libros_autor_ordenados = sorted(libros_autor, key=lambda x: x["autor"])
+            for libro in libros_autor_ordenados:
+                print(f"ID del Libro: {libro['id']}")
+                print(f"Título: {libro['titulo']}")
+                print(f"Autor: {libro['autor']}")
+                print(f"Precio: {libro['precio']}")
+                print("-" * 50)
+        else:
+            print("No se encontraron libros con ese autor.")
+
+    elif opcion == 2:
+        nombre_libro = validacionTexto("Ingrese el nombre del libro para listar los libros: ")
+        libros_nombre = [libro for libro in diccLibro.values() if libro.get("titulo", "") == nombre_libro]
+        if libros_nombre:
+            libros_nombre_ordenados = sorted(libros_nombre, key=lambda x: x["titulo"])
+            for libro in libros_nombre_ordenados:
+                print(f"ID del Libro: {libro['id']}")
+                print(f"Título: {libro['titulo']}")
+                print(f"Autor: {libro['autor']}")
+                print(f"Precio: {libro['precio']}")
+                print("-" * 50)
+        else:
+            print("No se encontraron libros con ese nombre.")
+
+    elif opcion == 3:
+        libros_ordenados_por_precio = sorted(diccLibro.values(), key=lambda x: x.get("precio", 0))
+        for libro in libros_ordenados_por_precio:
+            print(f"ID del Libro: {libro['id']}")
+            print(f"Título: {libro['titulo']}")
+            print(f"Autor: {libro['autor']}")
+            print(f"Precio: {libro['precio']}")
+            print("-" * 50)
+def eliminarLibro(diccLibro):
+    idLibro = str(validacion("Ingrese la ID del libro que desea eliminar: "))
+    if idLibro in diccLibro:
+        del diccLibro[idLibro]
+        escribirEnDisco(ruta, diccLibro)
+        print("El libro ha sido eliminado con éxito.")
+    else:
+        print("No se ha encontrado un libro con ese ID.")
 def escoger(opcion,diccBiblio):
     print("\n")
     if opcion == 1:
@@ -130,7 +190,7 @@ def escoger(opcion,diccBiblio):
         editarLibros(diccBiblio)
     elif opcion == 4:
         print("libros".center(100,"="))
-        mostrarLibros(diccBiblio)
+        eliminarLibro(diccBiblio)
     elif opcion == 5:
         print("libros".center(100,"="))
         mostrarLibros(diccBiblio)
@@ -149,8 +209,8 @@ def escoger(opcion,diccBiblio):
 ruta = "/home/spukN01-019/Documents/Diego/python/archivos/json/biblioteca.json"
 
 while True:
-  diccBiblioteca = cargarRuta(ruta)
-  input("\nPRESIONE CUALQUIER TECLA PARA CONTINUAR AL PROGRAMA MENU")
-  menu()
-  escoger(validacion("Opcion 1 a 3: "),diccBiblioteca)
-  print("\n")
+    diccBiblioteca = cargarRuta(ruta)
+    input("\nPRESIONE CUALQUIER TECLA PARA CONTINUAR AL PROGRAMA MENU")
+    menu()
+    escoger(validacion("Opcion 1 a 3: "),diccBiblioteca)
+    print("\n")

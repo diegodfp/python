@@ -4,8 +4,8 @@ import time
 def cargarRuta(ruta):
     try:
         with open(ruta, "r") as archivo:
-            lista_de_registros = json.load(archivo)
-        return lista_de_registros
+            listadeRegistros = json.load(archivo)
+        return listadeRegistros
     except FileNotFoundError:
         return []
 def ordenarGanadores(registros):
@@ -13,13 +13,13 @@ def ordenarGanadores(registros):
     return registrosOrdenados
 
 def registrarGanador(nombreGanador, tiempoGanador, movimientos, ruta, registros):
-    nuevo_registro = {
+    nuevoRegistro = {
         "nombre": nombreGanador,
         "tiempo": tiempoGanador,
         "movimientos": movimientos
     }
 
-    registros.append(nuevo_registro)
+    registros.append(nuevoRegistro)
     escribirEnDisco(ruta, registros)
     registrosOrdenados  = ordenarGanadores(registros)
     escribirEnDisco(ruta,registrosOrdenados)
