@@ -208,11 +208,11 @@ def escoger(opcion,diccBiblio):
 
 
 ##### MAIN CODE ####
-ruta = "C:\\Users\\campus\\Documents\\python\\biblioteca.json"
+ruta = "/home/spukN01-019/Documents/Diego/python/archivos/json/biblioteca.json"
 
 while True:
     diccBiblioteca = cargarRuta(ruta)
     input("\nPRESIONE CUALQUIER TECLA PARA CONTINUAR AL PROGRAMA MENU")
     menu()
-    escoger(validacion("Opcion 1 a 3: "),diccBiblioteca)
+    escoger(validacion("Opcion 1 a 6: "),diccBiblioteca)
     print("\n")

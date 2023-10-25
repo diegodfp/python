@@ -1,6 +1,6 @@
 nacimiento = input(" ingrese la fecha de nacimiento en formato dd/mm/aaaa \n")
 
-partes = nacimiento.split("/")
+partes = nacimiento
 if len(partes[0])==2 and len(partes[1])==2 and len(partes[2])==4:
     valido = True   
     for p in partes:
